@@ -4,7 +4,7 @@ def merge_sort(x)
   middle = x.length/2 
   x_2 = []
   y_2 = []
-  
+ 
   x.each_with_index do|item, index| 
     index<middle ? x_2 << x[index] : y_2 << x[index] 
   end
