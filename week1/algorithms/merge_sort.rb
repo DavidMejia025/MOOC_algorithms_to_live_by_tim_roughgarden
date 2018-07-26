@@ -1,50 +1,50 @@
 require "pry-byebug"
 def merge_sort(x)
   middle = x.length/2
-  x_2 = []
-  y_2 = []
-  x.each_with_index do|item, index|
-    index<middle ? x_2 << x[index] : y_2 << x[index]
-  end
-  if middle > 1
-    puts "#{x_2} #{y_2}"
-    merge_sort([merge_sort(x_2), merge_sort(y_2)])
-  else
-    sort(x_2, y_2).flatten
-  end
+    x_1 = []
+    x_2 = []
+    x.each_with_index do|item, index| 
+      index<middle ? x_1 << x[index] : x_2 << x[index] 
+    end
+    if middle > 0
+     result = merge(merge_sort(x_1), merge_sort(x_2))
+     result
+    else
+      x
+    end
 end
 
-def sort(x_2,y_2)
-  x_2 = x_2.flatten
-  y_2 = y_2.flatten
-   s = []
-   i = 0
-   j = 0
-   #puts "#{x_2} #{y_2}"
+def merge(x_2,y_2)
+  puts "The input is #{x_2} #{y_2}"
 
-   (x_2.length*2).times do |k|
-     #p " Sub is: #{x_2[i]} #{y_2[j]}"
-     #puts " #{k}"
-     if x_2[i] && y_2[j]
-       if x_2[i]< x_2[j]
-         s[k] = x_2[i]
-         i+=1
-       else
-         s[k] = y_2[j]
-         j+=1
-       end
-     else
-       if x_2[i]
-         s[k] = x_2[i]
-       else
-         s[k] = y_2[j]
-     end
+  y = []
+      i = 0
+      j = 0
+      k = 0
 
-   end
-   end
+      (x_2.length*2).times do |k|
+              #p "#{x_2[i]} #{y_2[j]}"     
+        if x_2[i] && y_2[j]
+          if x_2[i] < y_2[j]
+            y[k] = x_2[i]
+            i+=1
+          else
+            y[k] = y_2[j]
+            j+=1
+          end
+        elsif x_2[i]
+            y[k] = x_2[i]
+            i += 1
 
-   s
+        else
+            y[k] = y_2[j]
+            j += 1
+        end
+        y
+      end 
+     # p y 
+      y
 end
 
-x = [4,3,5,2,8,1,7,6]
+x = [4,10,3,16,2,11,1,9,12,13,6,14,5,7,2,8] 
  p merge_sort(x)
