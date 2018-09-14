@@ -94,5 +94,4 @@ puts "Karatsuba multiplication: \n"
 #timer(karatsuba(x,y))
 #p "results"
 p karatsuba(x,y)
-p x*y
-p x*y == third_grade(x,y)
+p x*y == third_grade(x,y) == karatsuba(x,y)

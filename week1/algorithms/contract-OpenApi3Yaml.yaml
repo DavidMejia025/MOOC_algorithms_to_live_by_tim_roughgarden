@@ -1,0 +1,932 @@
+openapi: 3.0.0
+info:
+  title: Vendor-bridge API
+  description: 'TODO: Add a description'
+  version: '1.0'
+servers:
+- url: http://vendor-bridge.negotiatus.com
+  variables: {}
+paths:
+  /account/validate:
+    post:
+      tags:
+      - Account validation
+      summary: Validate account
+      description: >-
+        The service provided through the following API supports accounts verification. By receiving the user (secured) credentials and a concrete vendor, the Account Validation endpoint tries to verify them against the vendor API.
+
+        **Important** The _username_, _password_, and secondary_account_info parameters, must be secured through encryption.
+      operationId: ValidateAccount
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ValidateAccountRequest'
+        required: true
+      responses:
+        202:
+          description: ''
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidateAccountResponse'
+        500:
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidateAccountResponse'
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+  /{callback_url}:
+    put:
+      tags:
+      - Checkout
+      summary: Callback on OTHER ERROR
+      description: ''
+      operationId: CallbackOnOtherError
+      parameters:
+      - name: callback_url
+        in: path
+        description: ''
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: www.negotiatus.com/checkout/44
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CallbackOnOtherErrorRequest'
+        required: true
+      responses:
+        200:
+          description: ''
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+  /product:
+    post:
+      tags:
+      - Product information
+      summary: Get product information
+      description: '**Important** The _username_, _password_, and secondary_account_info parameters, must be secured through encryption.'
+      operationId: GetProductInformation
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetProductInformationRequest'
+        required: true
+      responses:
+        202:
+          description: ''
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetProductInformationResponse'
+        500:
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetProductInformationResponse'
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+  /checkout:
+    post:
+      tags:
+      - Checkout
+      summary: Checkout
+      description: >-
+        **Important**
+
+        * The _username_, _password_, and secondary_account_info parameters, must be secured through encryption.
+
+        * The _payment_identifier_ varies with the context and might be the last four digits of a credit card, a bank account, an account number, etc.
+
+        * Line_items field only receive one type of product search e.g url or name or SKU. At the moment Line_items is only supported for url search.
+      operationId: Checkout
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CheckoutRequest'
+        required: true
+      responses:
+        202:
+          description: ''
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CheckoutResponse'
+        500:
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CheckoutResponse'
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+  /supported_services:
+    get:
+      tags:
+      - Supported services
+      summary: All supported services
+      description: >-
+        The service provided through the following API allows to check all the vendors supported by vendor bridge and specify which service for each vendor is available. With this API it is possible to list all vendors that has support,
+          create one or multiple vendors to be supported, and edit one or more supported services for each vendor. Also it can be asked for one particular vendor or deleted it.
+      operationId: AllSupportedServices
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AllSupportedServicesResponse'
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+    post:
+      tags:
+      - Supported services
+      summary: Create supported vendors
+      description: This endpoint allows to create one or mutiple vendors at once. It is important to take into account that even for one vendor case the value of the vendors key in the request must be an array.
+      operationId: CreateSupportedVendors
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateSupportedVendorsRequest'
+        required: true
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateSupportedVendorsResponse'
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+  /supported_services/edit:
+    put:
+      tags:
+      - Supported services
+      summary: Edit supported vendors service status
+      description: This endpoint allows to edit one or mutiple vendors at once. It is important to take into account that even for one vendor case the value of the vendors key in the request must be an array.
+      operationId: EditSupportedVendorsServiceStatus
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EditSupportedVendorsServiceStatusRequest'
+        required: true
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EditSupportedVendorsServiceStatusResponse'
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+  /supported_services/:vendor:
+    get:
+      tags:
+      - Supported services
+      summary: list one vendor
+      description: ''
+      operationId: ListOneVendor
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListOneVendorResponse'
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+    delete:
+      tags:
+      - Supported services
+      summary: Remove one vendor
+      description: >-
+        + Headers
+                     Authorization: apiKeyHere
+      operationId: RemoveOneVendor
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RemoveOneVendorResponse'
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+components:
+  schemas:
+    Callback:
+      title: Callback
+      type: object
+      properties:
+        url:
+          type: string
+          example: www.negotiatus.com/webhooks/some_resource
+        method:
+          type: string
+          example: PUT
+    Credentials:
+      title: Credentials
+      type: object
+      properties:
+        account_id:
+          type: number
+          example: 678
+        username:
+          type: string
+          description: Encrypted
+          example: a@aol.com
+        password:
+          type: string
+          description: Encrypted
+          example: 12345
+        secondary_account_info:
+          type: string
+          description: Encrypted
+          example: 8765
+    Address:
+      title: Address
+      required:
+      - line_1
+      - line_2
+      - city
+      - state
+      - zipcode
+      - attn_to
+      - business_name
+      type: object
+      properties:
+        line_1:
+          type: string
+          example: 260 W 39th St.
+        line_2:
+          type: string
+          example: Fl 15
+        city:
+          type: string
+          example: New York
+        state:
+          type: string
+          example: NY
+        zipcode:
+          type: string
+          example: 10018
+        attn_to:
+          type: string
+          example: Tom
+        business_name:
+          type: string
+          example: Negotiatus
+        phone_number:
+          type: string
+          example: 5164560987
+        country:
+          type: string
+          example: US
+    SupportedVendor:
+      title: SupportedVendor
+      required:
+      - Vendor
+      type: object
+      properties:
+        Vendor:
+          type: string
+          example: amazon
+        Services:
+          $ref: '#/components/schemas/Services'
+    Services:
+      title: Services
+      type: object
+      properties:
+        account_validator:
+          type: boolean
+          example: true
+        product_info:
+          type: boolean
+          example: true
+        checkout:
+          type: boolean
+          example: true
+    BasicProduct:
+      title: BasicProduct
+      required:
+      - name
+      - sku
+      - url
+      - price
+      type: object
+      properties:
+        name:
+          type: string
+          example: Letter paper
+        sku:
+          type: string
+          example: 8765432
+        url:
+          type: string
+          example: http://www.amazon.com/letter-paper
+        price:
+          type: string
+          description: In USD cents
+          example: 400
+    ProductInfo:
+      title: ProductInfo
+      allOf:
+      - $ref: '#/components/schemas/BasicProduct'
+      - type: object
+        properties:
+          description:
+            type: string
+            example: Ultrabook core i7
+          photo_url:
+            type: string
+            example: http://amazon.com/dell_xps/1.jpg
+          category:
+            type: string
+            example: Laptops
+    ProductCheckout:
+      title: ProductCheckout
+      allOf:
+      - $ref: '#/components/schemas/BasicProduct'
+      - required:
+        - quantity
+        - max_price
+        type: object
+        properties:
+          quantity:
+            type: number
+            example: 2
+          max_price:
+            type: string
+            description: In USD cents
+            example: 450
+    ProductCheckoutResponse:
+      title: ProductCheckoutResponse
+      allOf:
+      - $ref: '#/components/schemas/BasicProduct'
+      - required:
+        - quantity
+        - tracking_number
+        type: object
+        properties:
+          quantity:
+            type: number
+            example: 2
+          tracking_number:
+            $ref: '#/components/schemas/Tracking'
+    Tracking:
+      title: Tracking
+      required:
+      - number
+      - courier
+      type: object
+      properties:
+        number:
+          type: string
+          example: 3456789
+        courier:
+          type: string
+          example: dhl
+    IntervalDate:
+      title: IntervalDate
+      type: object
+      properties:
+        start_date:
+          type: string
+          description: ISO8601 in UTC
+          example: 2018-05-25T20:00Z
+        end_date:
+          type: string
+          description: ISO8601 in UTC
+          example: 2018-05-28T20:00Z
+    VendorSupport:
+      title: VendorSupport
+      type: object
+      properties:
+        '[service_name]':
+          type: boolean
+          example: true
+    ValidateAccountRequest:
+      title: Validate account request
+      required:
+      - credentials
+      - vendor
+      - callback
+      type: object
+      properties:
+        credentials:
+          $ref: '#/components/schemas/Credentials'
+        vendor:
+          type: string
+          example: amazon
+        callback:
+          $ref: '#/components/schemas/Callback'
+    ValidateAccountResponse:
+      title: Validate account response
+      type: object
+      properties:
+        message:
+          type: string
+          example: Username/password/vendor required
+    CallbackRequestRequest:
+      title: Callback request request
+      required:
+      - http_statusSS
+      - statusSS
+      type: object
+      properties:
+        http_statusSS:
+          $ref: '#/components/schemas/HttpStatusss'
+        statusSS:
+          $ref: '#/components/schemas/StatusSS'
+        screenshot:
+          type: string
+          description: S3 url image
+          example: http://s3.amazon.com/nego/1.jpg
+        message:
+          type: string
+          example: requires captcha to continue
+    HttpStatusss:
+      title: http_statusSS
+      enum:
+      - 206
+      - 200
+      - 401
+      - 502
+      type: integer
+      example: 206
+      x-enum-elements:
+      - name: Enum_206
+        description: UNSURE
+      - name: Enum_200
+        description: VERIFIED
+      - name: Enum_401
+        description: INCORRECT
+      - name: Enum_502
+        description: UNDETERMINED
+    StatusSS:
+      title: statusSS
+      enum:
+      - UNSURE
+      - VERIFIED
+      - INCORRECT
+      type: string
+      example: UNSURE
+      x-enum-elements:
+      - name: UNSURE
+        description: ''
+      - name: VERIFIED
+        description: ''
+      - name: INCORRECT
+        description: ''
+    GetProductInformationRequest:
+      title: Get product information request
+      required:
+      - vendor
+      - zip_code
+      - callback
+      type: object
+      properties:
+        credentials:
+          $ref: '#/components/schemas/Credentials'
+        vendor:
+          type: string
+          example: amazon
+        name:
+          type: string
+          example: Dell XPS 13"
+        sku:
+          type: string
+          example: B0002SKHIK
+        url:
+          type: string
+          description: xps    (string, optional)
+          example: http://amazon.com/dell
+        zip_code:
+          type: number
+          example: 10001
+        callback:
+          $ref: '#/components/schemas/Callback'
+    GetProductInformationResponse:
+      title: Get product information response
+      type: object
+      properties:
+        message:
+          type: string
+          example: Username/password/vendor/product info required
+    CallbackRequestRequest28:
+      title: Callback request request28
+      required:
+      - http_status
+      - status
+      - product
+      type: object
+      properties:
+        http_status:
+          example: 200
+          $ref: '#/components/schemas/HttpStatus'
+        status:
+          $ref: '#/components/schemas/Status'
+        account_id:
+          type: number
+          example: 678
+        product:
+          $ref: '#/components/schemas/ProductInfo'
+        screenshot:
+          type: string
+          description: S3 url image
+          example: http://s3.amazon.com/nego/1.jpg
+    HttpStatus:
+      title: http_status
+      enum:
+      - 200
+      - 206
+      - 401
+      - 204
+      - 502
+      type: integer
+      example: 200
+      x-enum-elements:
+      - name: Enum_200
+        description: COMPLETE
+      - name: Enum_206
+        description: PARTIAL
+      - name: Enum_401
+        description: INVALID_ACCOUNT
+      - name: Enum_204
+        description: NO_INFO
+      - name: Enum_502
+        description: OTHER_ERROR
+    Status:
+      title: status
+      enum:
+      - COMPLETE
+      - PARTIAL
+      - INVALID_ACCOUNT
+      - NO_INFO
+      - OTHER_ERROR
+      type: string
+      example: COMPLETE
+      x-enum-elements:
+      - name: COMPLETE
+        description: ''
+      - name: PARTIAL
+        description: ''
+      - name: INVALID_ACCOUNT
+        description: ''
+      - name: NO_INFO
+        description: ''
+      - name: OTHER_ERROR
+        description: ''
+    CheckoutRequest:
+      title: Checkout request
+      required:
+      - vendor
+      - halt_checkout
+      - callback
+      type: object
+      properties:
+        credentials:
+          $ref: '#/components/schemas/Credentials'
+        vendor:
+          type: string
+          example: amazon
+        halt_checkout:
+          type: boolean
+          example: true
+        order:
+          $ref: '#/components/schemas/Order'
+        callback:
+          $ref: '#/components/schemas/Callback'
+    Order:
+      title: order
+      required:
+      - line_items
+      - shipping_address
+      type: object
+      properties:
+        line_items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductCheckout'
+          description: ''
+        shipping_address:
+          $ref: '#/components/schemas/Address'
+        billing_address:
+          $ref: '#/components/schemas/Address'
+        payment_identifier:
+          type: string
+          example: 3456
+        secondary_payment_identifier:
+          type: string
+          example: 3456
+        shipping_preferences:
+          $ref: '#/components/schemas/ShippingPreferences'
+        pricing_preferences:
+          $ref: '#/components/schemas/PricingPreferences'
+        po_number:
+          type: number
+          example: 23
+        notes:
+          type: string
+          example: foo
+    ShippingPreferences:
+      title: shipping_preferences
+      type: object
+      properties:
+        max_price:
+          type: number
+          example: 300
+        max_time:
+          type: number
+          description: Number of days
+          example: 5
+    PricingPreferences:
+      title: pricing_preferences
+      type: object
+      properties:
+        max_total_price:
+          type: number
+          example: 2000
+    CheckoutResponse:
+      title: Checkout response
+      type: object
+      properties:
+        message:
+          type: string
+          example: Username/password/vendor/order info incomplete for vendor {VENDOR} for {FULL_CHECKOUT/HALTED_CHECKOUT}
+    CallbackOnCompleteRequest:
+      title: Callback on COMPLETE request
+      required:
+      - http_status
+      - status
+      - halt_checkout
+      type: object
+      properties:
+        http_status:
+          type: number
+          example: 200
+        status:
+          type: string
+          example: COMPLETE
+        halt_checkout:
+          type: boolean
+          example: true
+        order:
+          $ref: '#/components/schemas/Order54'
+    Order54:
+      title: order54
+      required:
+      - line_items
+      - shipping_address
+      - billing_address
+      - payment_identifier
+      - tax
+      - shipping
+      - discount
+      - total_price
+      - po_number
+      - vendor_order_number
+      - ship_date
+      - tracking_numbers
+      type: object
+      properties:
+        line_items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductCheckoutResponse'
+          description: ''
+        shipping_address:
+          $ref: '#/components/schemas/Address'
+        billing_address:
+          $ref: '#/components/schemas/Address'
+        payment_identifier:
+          type: string
+          example: 3456
+        tax:
+          type: number
+          description: USD in cents
+          example: 2300
+        shipping:
+          type: number
+          description: USD in cents
+          example: 500
+        discount:
+          type: number
+          description: USD in cents
+          example: 2000
+        total_price:
+          type: number
+          description: USD in cents
+          example: 34500
+        po_number:
+          type: number
+          description: USD in cents
+          example: 7654
+        vendor_order_number:
+          type: number
+          example: 234567
+        ship_date:
+          type: string
+          description: ISO8601 in UTC
+          example: 2018-05-21T13:00Z
+        estimated_delivery_date:
+          $ref: '#/components/schemas/IntervalDate'
+        screenshot:
+          type: string
+          description: S3 url image
+          example: http://s3.amazon.com/nego/1.jpg
+        tracking_numbers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tracking'
+          description: ''
+    CallbackOnIncompleteRequest:
+      title: Callback on INCOMPLETE request
+      required:
+      - http_status
+      - status
+      - halt_checkout
+      type: object
+      properties:
+        http_status:
+          type: number
+          example: 204
+        status:
+          example: PRODUCT_MAX_PRICE_EXCEEDED
+          $ref: '#/components/schemas/Status56'
+        halt_checkout:
+          type: boolean
+          example: true
+        estimated_delivery_date:
+          $ref: '#/components/schemas/IntervalDate'
+        order_price:
+          type: number
+          description: USD in cents
+          example: 10500
+        shipping_price:
+          type: number
+          description: USD in cents
+          example: 2300
+        line_items:
+          type: array
+          items:
+            $ref: '#/components/schemas/BasicProduct'
+          description: ''
+    Status56:
+      title: status56
+      enum:
+      - PRODUCT_MAX_PRICE_EXCEEDED
+      - ORDER_TOTAL_MAX_PRICE_EXCEEDED
+      - ORDER_INCOMPLETE
+      - SHIPPING_MAX_PRICE_EXCEEDED
+      - SHIPPING_MAX_TIME_EXCEEDED
+      type: string
+      example: PRODUCT_MAX_PRICE_EXCEEDED
+      x-enum-elements:
+      - name: PRODUCT_MAX_PRICE_EXCEEDED
+        description: ''
+      - name: ORDER_TOTAL_MAX_PRICE_EXCEEDED
+        description: ''
+      - name: ORDER_INCOMPLETE
+        description: ''
+      - name: SHIPPING_MAX_PRICE_EXCEEDED
+        description: ''
+      - name: SHIPPING_MAX_TIME_EXCEEDED
+        description: ''
+    CallbackOnOtherErrorRequest:
+      title: Callback on OTHER ERROR request
+      required:
+      - http_status
+      - status
+      type: object
+      properties:
+        http_status:
+          type: number
+          example: 500
+        status:
+          type: string
+          example: UNEXPECTED_ERROR
+        message:
+          type: string
+          example: detailed error explanation
+    AllSupportedServicesResponse:
+      title: All supported services response
+      required:
+      - Vendor
+      type: object
+      properties:
+        Vendor:
+          type: string
+          example: walmart
+        Services:
+          $ref: '#/components/schemas/Services'
+    CreateSupportedVendorsRequest:
+      title: Create supported vendors request
+      type: object
+      properties:
+        vendors:
+          type: array
+          items:
+            $ref: '#/components/schemas/SupportedVendor'
+          description: ''
+    CreateSupportedVendorsResponse:
+      title: Create supported vendors response
+      type: object
+      properties:
+        vendors:
+          type: array
+          items:
+            $ref: '#/components/schemas/SupportedVendor'
+          description: ''
+    EditSupportedVendorsServiceStatusRequest:
+      title: Edit supported vendors service status request
+      type: object
+      properties:
+        vendors:
+          type: array
+          items:
+            $ref: '#/components/schemas/SupportedVendor'
+          description: ''
+    EditSupportedVendorsServiceStatusResponse:
+      title: Edit supported vendors service status response
+      type: object
+      properties:
+        amazon:
+          type: string
+          example: true
+    ListOneVendorResponse:
+      title: list one vendor response
+      required:
+      - Vendor
+      type: object
+      properties:
+        Vendor:
+          type: string
+          example: amazon
+        Services:
+          $ref: '#/components/schemas/Services'
+    RemoveOneVendorResponse:
+      title: Remove one vendor response
+      type: object
+      properties:
+        amazon:
+          type: string
+          example: true
